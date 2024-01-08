@@ -1,0 +1,5 @@
+/home/hans/test/serial/build/CMakeFiles/rebuild_cache.dir
+/home/hans/test/serial/build/CMakeFiles/edit_cache.dir
+/home/hans/test/serial/build/src/CMakeFiles/rebuild_cache.dir
+/home/hans/test/serial/build/src/CMakeFiles/testUT.dir
+/home/hans/test/serial/build/src/CMakeFiles/edit_cache.dir

@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o -c /home/hans/test/serial/include/FileExtension.cpp",
+  "file": "/home/hans/test/serial/include/FileExtension.cpp"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/Change.cpp.o -c /home/hans/test/serial/include/Change.cpp",
+  "file": "/home/hans/test/serial/include/Change.cpp"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/Checkout.cpp.o -c /home/hans/test/serial/include/Checkout.cpp",
+  "file": "/home/hans/test/serial/include/Checkout.cpp"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o -c /home/hans/test/serial/src/usb2RS485/SerialPort.cpp",
+  "file": "/home/hans/test/serial/src/usb2RS485/SerialPort.cpp"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/weld/handle.cpp.o -c /home/hans/test/serial/src/weld/handle.cpp",
+  "file": "/home/hans/test/serial/src/weld/handle.cpp"
+}
+]
