@@ -32,6 +32,9 @@ std::vector<int> button3 = {0, 0, 1, 1};
 std::vector<int> button4 = {1, 1, 0, 1};
 std::vector<int> button5 = {0, 1, 0, 1};
 std::vector<int> button6 = {1, 0, 0, 1};
+int pressTime = 0;
+int pushFunctionIndex = 0;
+bool pushFunctionFlag = false;
 
 std::map<int, std::vector<int>> buttonMap{
     {1, button1},
@@ -40,6 +43,16 @@ std::map<int, std::vector<int>> buttonMap{
     {4, button4},
     {5, button5},
     {6, button6}};
+
+enum ButtonFunction // 按钮功能（推送前端的部分）
+{
+    AddLine = 1,                // 添加直线
+    AddCircularArc,             // 添加圆弧
+    AddStraightWeldingTemplate, // 添加直线焊接模板
+    AddArcWeldingTemplate,      // 添加圆弧焊接模板
+    CursorDown,                 // 光标下移
+    CursorUp,                   // 光标上移
+};
 
 int GetButtonPressedIndexOf6ButtonHandleForPro(std::vector<int> endDI)
 {
@@ -72,6 +85,10 @@ void HandleFunc(std::vector<int> endDI)
 {
     if (endDI == buttonDefault) // 如果信号是松开的时候
     {
+        if (0 == buttonIndex)
+        {
+            return;
+        }
         if (buttonIndex > 0)
         {
             cout << "第" << buttonIndex << "个按钮松开" << endl;
@@ -85,20 +102,45 @@ void HandleFunc(std::vector<int> endDI)
         switch (buttonIndex)
         {
         case 1:
+            if (pressTime < 1000) // 短按
+            {
+                pushFunctionIndex = AddLine;
+            }
+            else // 长按
+            {
+                pushFunctionIndex = AddCircularArc;
+            }
+            pushFunctionFlag = true;
             break;
         case 2:
+            if (pressTime < 1000) // 短按
+            {
+                pushFunctionIndex = AddStraightWeldingTemplate;
+            }
+            else // 长按
+            {
+                pushFunctionIndex = AddArcWeldingTemplate;
+            }
+            pushFunctionFlag = true;
             break;
         case 3:
+            // 停止送丝
             break;
         case 4:
+            // 停止退丝
             break;
         case 5:
+            pushFunctionIndex = CursorDown;
+            pushFunctionFlag = true;
             break;
         case 6:
+            pushFunctionIndex = CursorUp;
+            pushFunctionFlag = true;
             break;
         default:
             break;
         }
+        pressTime = 0;
         buttonIndex = 0;
     }
     else // 如果按下
@@ -113,12 +155,16 @@ void HandleFunc(std::vector<int> endDI)
         switch (buttonIndex)
         {
         case 1:
+            pressTime += 50;
             break;
         case 2:
+            pressTime += 50;
             break;
         case 3:
+            // 送丝
             break;
         case 4:
+            // 退丝
             break;
         case 5:
             break;
@@ -285,7 +331,7 @@ bool RecevieJsonEndDIFromSocket(int &sockfd, std::vector<int> &endDI)
     // std::cout  << "buffer over"<< endl;
 
     // 将接收到的数据转换为字符串
-    std::string receivedData(buffer+startPos, newDataLength);
+    std::string receivedData(buffer + startPos, newDataLength);
     // 解析 JSON 数据
     try
     {
