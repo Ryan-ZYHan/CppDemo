@@ -206,6 +206,195 @@ __/include/FileExtension.cpp.s:
 	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.s
 .PHONY : __/include/FileExtension.cpp.s
 
+__/include/easylogger/plugins/file/elog_file.o: __/include/easylogger/plugins/file/elog_file.c.o
+
+.PHONY : __/include/easylogger/plugins/file/elog_file.o
+
+# target to build an object file
+__/include/easylogger/plugins/file/elog_file.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file.c.o
+.PHONY : __/include/easylogger/plugins/file/elog_file.c.o
+
+__/include/easylogger/plugins/file/elog_file.i: __/include/easylogger/plugins/file/elog_file.c.i
+
+.PHONY : __/include/easylogger/plugins/file/elog_file.i
+
+# target to preprocess a source file
+__/include/easylogger/plugins/file/elog_file.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file.c.i
+.PHONY : __/include/easylogger/plugins/file/elog_file.c.i
+
+__/include/easylogger/plugins/file/elog_file.s: __/include/easylogger/plugins/file/elog_file.c.s
+
+.PHONY : __/include/easylogger/plugins/file/elog_file.s
+
+# target to generate assembly for a file
+__/include/easylogger/plugins/file/elog_file.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file.c.s
+.PHONY : __/include/easylogger/plugins/file/elog_file.c.s
+
+__/include/easylogger/plugins/file/elog_file_port.o: __/include/easylogger/plugins/file/elog_file_port.c.o
+
+.PHONY : __/include/easylogger/plugins/file/elog_file_port.o
+
+# target to build an object file
+__/include/easylogger/plugins/file/elog_file_port.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file_port.c.o
+.PHONY : __/include/easylogger/plugins/file/elog_file_port.c.o
+
+__/include/easylogger/plugins/file/elog_file_port.i: __/include/easylogger/plugins/file/elog_file_port.c.i
+
+.PHONY : __/include/easylogger/plugins/file/elog_file_port.i
+
+# target to preprocess a source file
+__/include/easylogger/plugins/file/elog_file_port.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file_port.c.i
+.PHONY : __/include/easylogger/plugins/file/elog_file_port.c.i
+
+__/include/easylogger/plugins/file/elog_file_port.s: __/include/easylogger/plugins/file/elog_file_port.c.s
+
+.PHONY : __/include/easylogger/plugins/file/elog_file_port.s
+
+# target to generate assembly for a file
+__/include/easylogger/plugins/file/elog_file_port.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file_port.c.s
+.PHONY : __/include/easylogger/plugins/file/elog_file_port.c.s
+
+__/include/easylogger/port/elog_port.o: __/include/easylogger/port/elog_port.c.o
+
+.PHONY : __/include/easylogger/port/elog_port.o
+
+# target to build an object file
+__/include/easylogger/port/elog_port.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/port/elog_port.c.o
+.PHONY : __/include/easylogger/port/elog_port.c.o
+
+__/include/easylogger/port/elog_port.i: __/include/easylogger/port/elog_port.c.i
+
+.PHONY : __/include/easylogger/port/elog_port.i
+
+# target to preprocess a source file
+__/include/easylogger/port/elog_port.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/port/elog_port.c.i
+.PHONY : __/include/easylogger/port/elog_port.c.i
+
+__/include/easylogger/port/elog_port.s: __/include/easylogger/port/elog_port.c.s
+
+.PHONY : __/include/easylogger/port/elog_port.s
+
+# target to generate assembly for a file
+__/include/easylogger/port/elog_port.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/port/elog_port.c.s
+.PHONY : __/include/easylogger/port/elog_port.c.s
+
+__/include/easylogger/src/elog.o: __/include/easylogger/src/elog.c.o
+
+.PHONY : __/include/easylogger/src/elog.o
+
+# target to build an object file
+__/include/easylogger/src/elog.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog.c.o
+.PHONY : __/include/easylogger/src/elog.c.o
+
+__/include/easylogger/src/elog.i: __/include/easylogger/src/elog.c.i
+
+.PHONY : __/include/easylogger/src/elog.i
+
+# target to preprocess a source file
+__/include/easylogger/src/elog.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog.c.i
+.PHONY : __/include/easylogger/src/elog.c.i
+
+__/include/easylogger/src/elog.s: __/include/easylogger/src/elog.c.s
+
+.PHONY : __/include/easylogger/src/elog.s
+
+# target to generate assembly for a file
+__/include/easylogger/src/elog.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog.c.s
+.PHONY : __/include/easylogger/src/elog.c.s
+
+__/include/easylogger/src/elog_async.o: __/include/easylogger/src/elog_async.c.o
+
+.PHONY : __/include/easylogger/src/elog_async.o
+
+# target to build an object file
+__/include/easylogger/src/elog_async.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_async.c.o
+.PHONY : __/include/easylogger/src/elog_async.c.o
+
+__/include/easylogger/src/elog_async.i: __/include/easylogger/src/elog_async.c.i
+
+.PHONY : __/include/easylogger/src/elog_async.i
+
+# target to preprocess a source file
+__/include/easylogger/src/elog_async.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_async.c.i
+.PHONY : __/include/easylogger/src/elog_async.c.i
+
+__/include/easylogger/src/elog_async.s: __/include/easylogger/src/elog_async.c.s
+
+.PHONY : __/include/easylogger/src/elog_async.s
+
+# target to generate assembly for a file
+__/include/easylogger/src/elog_async.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_async.c.s
+.PHONY : __/include/easylogger/src/elog_async.c.s
+
+__/include/easylogger/src/elog_buf.o: __/include/easylogger/src/elog_buf.c.o
+
+.PHONY : __/include/easylogger/src/elog_buf.o
+
+# target to build an object file
+__/include/easylogger/src/elog_buf.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_buf.c.o
+.PHONY : __/include/easylogger/src/elog_buf.c.o
+
+__/include/easylogger/src/elog_buf.i: __/include/easylogger/src/elog_buf.c.i
+
+.PHONY : __/include/easylogger/src/elog_buf.i
+
+# target to preprocess a source file
+__/include/easylogger/src/elog_buf.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_buf.c.i
+.PHONY : __/include/easylogger/src/elog_buf.c.i
+
+__/include/easylogger/src/elog_buf.s: __/include/easylogger/src/elog_buf.c.s
+
+.PHONY : __/include/easylogger/src/elog_buf.s
+
+# target to generate assembly for a file
+__/include/easylogger/src/elog_buf.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_buf.c.s
+.PHONY : __/include/easylogger/src/elog_buf.c.s
+
+__/include/easylogger/src/elog_utils.o: __/include/easylogger/src/elog_utils.c.o
+
+.PHONY : __/include/easylogger/src/elog_utils.o
+
+# target to build an object file
+__/include/easylogger/src/elog_utils.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_utils.c.o
+.PHONY : __/include/easylogger/src/elog_utils.c.o
+
+__/include/easylogger/src/elog_utils.i: __/include/easylogger/src/elog_utils.c.i
+
+.PHONY : __/include/easylogger/src/elog_utils.i
+
+# target to preprocess a source file
+__/include/easylogger/src/elog_utils.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_utils.c.i
+.PHONY : __/include/easylogger/src/elog_utils.c.i
+
+__/include/easylogger/src/elog_utils.s: __/include/easylogger/src/elog_utils.c.s
+
+.PHONY : __/include/easylogger/src/elog_utils.s
+
+# target to generate assembly for a file
+__/include/easylogger/src/elog_utils.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_utils.c.s
+.PHONY : __/include/easylogger/src/elog_utils.c.s
+
 usb2RS485/SerialPort.o: usb2RS485/SerialPort.cpp.o
 
 .PHONY : usb2RS485/SerialPort.o
@@ -278,6 +467,27 @@ help:
 	@echo "... __/include/FileExtension.o"
 	@echo "... __/include/FileExtension.i"
 	@echo "... __/include/FileExtension.s"
+	@echo "... __/include/easylogger/plugins/file/elog_file.o"
+	@echo "... __/include/easylogger/plugins/file/elog_file.i"
+	@echo "... __/include/easylogger/plugins/file/elog_file.s"
+	@echo "... __/include/easylogger/plugins/file/elog_file_port.o"
+	@echo "... __/include/easylogger/plugins/file/elog_file_port.i"
+	@echo "... __/include/easylogger/plugins/file/elog_file_port.s"
+	@echo "... __/include/easylogger/port/elog_port.o"
+	@echo "... __/include/easylogger/port/elog_port.i"
+	@echo "... __/include/easylogger/port/elog_port.s"
+	@echo "... __/include/easylogger/src/elog.o"
+	@echo "... __/include/easylogger/src/elog.i"
+	@echo "... __/include/easylogger/src/elog.s"
+	@echo "... __/include/easylogger/src/elog_async.o"
+	@echo "... __/include/easylogger/src/elog_async.i"
+	@echo "... __/include/easylogger/src/elog_async.s"
+	@echo "... __/include/easylogger/src/elog_buf.o"
+	@echo "... __/include/easylogger/src/elog_buf.i"
+	@echo "... __/include/easylogger/src/elog_buf.s"
+	@echo "... __/include/easylogger/src/elog_utils.o"
+	@echo "... __/include/easylogger/src/elog_utils.i"
+	@echo "... __/include/easylogger/src/elog_utils.s"
 	@echo "... usb2RS485/SerialPort.o"
 	@echo "... usb2RS485/SerialPort.i"
 	@echo "... usb2RS485/SerialPort.s"

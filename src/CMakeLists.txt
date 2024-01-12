@@ -6,11 +6,11 @@ INCLUDE_DIRECTORIES(${test_INC})
 # 添加libserialport库的路径
 set(LIBSERIALPORT_DIR /usr/local/lib/)
 
-file(GLOB_RECURSE TestSRC
-                # ../include/SerialPort.cpp   
+file(GLOB_RECURSE TestSRC  
                 ../include/FileExtension.cpp
                 ../include/Change.cpp
                 ../include/Checkout.cpp
+                ../include/easylogger/*.c
                 ./usb2RS485/SerialPort.cpp       
 
                 # ./usb2RS485/main.cpp

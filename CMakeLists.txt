@@ -12,6 +12,8 @@ set(CMAKE_BUILD_TYPE Debug)
 # 添加头文件路径    
 SET(test_project_INC   
 ${PROJECT_SOURCE_DIR}/include
+${PROJECT_SOURCE_DIR}/include/easylogger/src
+${PROJECT_SOURCE_DIR}/include/easylogger/port
 )
 INCLUDE_DIRECTORIES(${test_project_INC})
 message(test_project_INC)

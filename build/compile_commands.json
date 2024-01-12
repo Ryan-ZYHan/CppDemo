@@ -1,27 +1,62 @@
 [
 {
   "directory": "/home/hans/test/serial/build/src",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o -c /home/hans/test/serial/include/FileExtension.cpp",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o -c /home/hans/test/serial/include/FileExtension.cpp",
   "file": "/home/hans/test/serial/include/FileExtension.cpp"
 },
 {
   "directory": "/home/hans/test/serial/build/src",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/Change.cpp.o -c /home/hans/test/serial/include/Change.cpp",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/Change.cpp.o -c /home/hans/test/serial/include/Change.cpp",
   "file": "/home/hans/test/serial/include/Change.cpp"
 },
 {
   "directory": "/home/hans/test/serial/build/src",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/Checkout.cpp.o -c /home/hans/test/serial/include/Checkout.cpp",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -std=c++1z -o CMakeFiles/testUT.dir/__/include/Checkout.cpp.o -c /home/hans/test/serial/include/Checkout.cpp",
   "file": "/home/hans/test/serial/include/Checkout.cpp"
 },
 {
   "directory": "/home/hans/test/serial/build/src",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o -c /home/hans/test/serial/src/usb2RS485/SerialPort.cpp",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file.c.o   -c /home/hans/test/serial/include/easylogger/plugins/file/elog_file.c",
+  "file": "/home/hans/test/serial/include/easylogger/plugins/file/elog_file.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/plugins/file/elog_file_port.c.o   -c /home/hans/test/serial/include/easylogger/plugins/file/elog_file_port.c",
+  "file": "/home/hans/test/serial/include/easylogger/plugins/file/elog_file_port.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/port/elog_port.c.o   -c /home/hans/test/serial/include/easylogger/port/elog_port.c",
+  "file": "/home/hans/test/serial/include/easylogger/port/elog_port.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/src/elog.c.o   -c /home/hans/test/serial/include/easylogger/src/elog.c",
+  "file": "/home/hans/test/serial/include/easylogger/src/elog.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/src/elog_async.c.o   -c /home/hans/test/serial/include/easylogger/src/elog_async.c",
+  "file": "/home/hans/test/serial/include/easylogger/src/elog_async.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/src/elog_buf.c.o   -c /home/hans/test/serial/include/easylogger/src/elog_buf.c",
+  "file": "/home/hans/test/serial/include/easylogger/src/elog_buf.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-gcc-7  -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -o CMakeFiles/testUT.dir/__/include/easylogger/src/elog_utils.c.o   -c /home/hans/test/serial/include/easylogger/src/elog_utils.c",
+  "file": "/home/hans/test/serial/include/easylogger/src/elog_utils.c"
+},
+{
+  "directory": "/home/hans/test/serial/build/src",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -std=c++1z -o CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o -c /home/hans/test/serial/src/usb2RS485/SerialPort.cpp",
   "file": "/home/hans/test/serial/src/usb2RS485/SerialPort.cpp"
 },
 {
   "directory": "/home/hans/test/serial/build/src",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include  -g   -std=c++1z -o CMakeFiles/testUT.dir/weld/handle.cpp.o -c /home/hans/test/serial/src/weld/handle.cpp",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port  -g   -std=c++1z -o CMakeFiles/testUT.dir/weld/handle.cpp.o -c /home/hans/test/serial/src/weld/handle.cpp",
   "file": "/home/hans/test/serial/src/weld/handle.cpp"
 }
 ]
