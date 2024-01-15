@@ -11,6 +11,7 @@ file(GLOB_RECURSE TestSRC
                 ../include/Change.cpp
                 ../include/Checkout.cpp
                 ../include/easylogger/*.c
+                ../include/cJSON/*.c
                 ./usb2RS485/SerialPort.cpp       
 
                 # ./usb2RS485/main.cpp
@@ -21,7 +22,8 @@ file(GLOB_RECURSE TestSRC
                 # ./usb2RS485/haibaoTest.cpp
                 # ./inherit/main.cpp
                 # ./arrayTest/main.cpp
-                ./weld/handle.cpp
+                # ./weld/handle.cpp
+                ./weld/Handle.cpp
                 # ./socket/readJsonFormIPandPort.cpp
                 )
 

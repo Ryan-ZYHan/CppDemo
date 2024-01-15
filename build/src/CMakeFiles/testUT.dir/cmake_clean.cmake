@@ -9,8 +9,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/testUT.dir/__/include/easylogger/src/elog_async.c.o"
   "CMakeFiles/testUT.dir/__/include/easylogger/src/elog_buf.c.o"
   "CMakeFiles/testUT.dir/__/include/easylogger/src/elog_utils.c.o"
+  "CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.o"
+  "CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.o"
   "CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o"
-  "CMakeFiles/testUT.dir/weld/handle.cpp.o"
+  "CMakeFiles/testUT.dir/weld/Handle.cpp.o"
   "../testUT.pdb"
   "../testUT"
 )

@@ -206,6 +206,60 @@ __/include/FileExtension.cpp.s:
 	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.s
 .PHONY : __/include/FileExtension.cpp.s
 
+__/include/cJSON/cJSON.o: __/include/cJSON/cJSON.c.o
+
+.PHONY : __/include/cJSON/cJSON.o
+
+# target to build an object file
+__/include/cJSON/cJSON.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.o
+.PHONY : __/include/cJSON/cJSON.c.o
+
+__/include/cJSON/cJSON.i: __/include/cJSON/cJSON.c.i
+
+.PHONY : __/include/cJSON/cJSON.i
+
+# target to preprocess a source file
+__/include/cJSON/cJSON.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.i
+.PHONY : __/include/cJSON/cJSON.c.i
+
+__/include/cJSON/cJSON.s: __/include/cJSON/cJSON.c.s
+
+.PHONY : __/include/cJSON/cJSON.s
+
+# target to generate assembly for a file
+__/include/cJSON/cJSON.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.s
+.PHONY : __/include/cJSON/cJSON.c.s
+
+__/include/cJSON/cJSON_Utils.o: __/include/cJSON/cJSON_Utils.c.o
+
+.PHONY : __/include/cJSON/cJSON_Utils.o
+
+# target to build an object file
+__/include/cJSON/cJSON_Utils.c.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.o
+.PHONY : __/include/cJSON/cJSON_Utils.c.o
+
+__/include/cJSON/cJSON_Utils.i: __/include/cJSON/cJSON_Utils.c.i
+
+.PHONY : __/include/cJSON/cJSON_Utils.i
+
+# target to preprocess a source file
+__/include/cJSON/cJSON_Utils.c.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.i
+.PHONY : __/include/cJSON/cJSON_Utils.c.i
+
+__/include/cJSON/cJSON_Utils.s: __/include/cJSON/cJSON_Utils.c.s
+
+.PHONY : __/include/cJSON/cJSON_Utils.s
+
+# target to generate assembly for a file
+__/include/cJSON/cJSON_Utils.c.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.s
+.PHONY : __/include/cJSON/cJSON_Utils.c.s
+
 __/include/easylogger/plugins/file/elog_file.o: __/include/easylogger/plugins/file/elog_file.c.o
 
 .PHONY : __/include/easylogger/plugins/file/elog_file.o
@@ -422,32 +476,32 @@ usb2RS485/SerialPort.cpp.s:
 	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.s
 .PHONY : usb2RS485/SerialPort.cpp.s
 
-weld/handle.o: weld/handle.cpp.o
+weld/Handle.o: weld/Handle.cpp.o
 
-.PHONY : weld/handle.o
+.PHONY : weld/Handle.o
 
 # target to build an object file
-weld/handle.cpp.o:
-	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.o
-.PHONY : weld/handle.cpp.o
+weld/Handle.cpp.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.o
+.PHONY : weld/Handle.cpp.o
 
-weld/handle.i: weld/handle.cpp.i
+weld/Handle.i: weld/Handle.cpp.i
 
-.PHONY : weld/handle.i
+.PHONY : weld/Handle.i
 
 # target to preprocess a source file
-weld/handle.cpp.i:
-	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.i
-.PHONY : weld/handle.cpp.i
+weld/Handle.cpp.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.i
+.PHONY : weld/Handle.cpp.i
 
-weld/handle.s: weld/handle.cpp.s
+weld/Handle.s: weld/Handle.cpp.s
 
-.PHONY : weld/handle.s
+.PHONY : weld/Handle.s
 
 # target to generate assembly for a file
-weld/handle.cpp.s:
-	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.s
-.PHONY : weld/handle.cpp.s
+weld/Handle.cpp.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.s
+.PHONY : weld/Handle.cpp.s
 
 # Help Target
 help:
@@ -467,6 +521,12 @@ help:
 	@echo "... __/include/FileExtension.o"
 	@echo "... __/include/FileExtension.i"
 	@echo "... __/include/FileExtension.s"
+	@echo "... __/include/cJSON/cJSON.o"
+	@echo "... __/include/cJSON/cJSON.i"
+	@echo "... __/include/cJSON/cJSON.s"
+	@echo "... __/include/cJSON/cJSON_Utils.o"
+	@echo "... __/include/cJSON/cJSON_Utils.i"
+	@echo "... __/include/cJSON/cJSON_Utils.s"
 	@echo "... __/include/easylogger/plugins/file/elog_file.o"
 	@echo "... __/include/easylogger/plugins/file/elog_file.i"
 	@echo "... __/include/easylogger/plugins/file/elog_file.s"
@@ -491,9 +551,9 @@ help:
 	@echo "... usb2RS485/SerialPort.o"
 	@echo "... usb2RS485/SerialPort.i"
 	@echo "... usb2RS485/SerialPort.s"
-	@echo "... weld/handle.o"
-	@echo "... weld/handle.i"
-	@echo "... weld/handle.s"
+	@echo "... weld/Handle.o"
+	@echo "... weld/Handle.i"
+	@echo "... weld/Handle.s"
 .PHONY : help
 
 

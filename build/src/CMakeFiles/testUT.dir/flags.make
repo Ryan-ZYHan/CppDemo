@@ -7,11 +7,11 @@ C_FLAGS = -g
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port 
+C_INCLUDES = -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/inc -I/home/hans/test/serial/include/easylogger/plugins -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port -I/home/hans/test/serial/include/cJSON 
 
 CXX_FLAGS = -g   -std=c++1z
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port 
+CXX_INCLUDES = -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/inc -I/home/hans/test/serial/include/easylogger/plugins -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port -I/home/hans/test/serial/include/cJSON 
 

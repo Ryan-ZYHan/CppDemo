@@ -2,6 +2,7 @@
 #include "elog.h"
 #include "HRSDK/HR_Pro.h"
 
+
 int Handle::SetRobotModel(RobotModel robotModel)
 {
     HR_LOG_Info("enter Handle::SetRobotModel.");
@@ -33,14 +34,42 @@ int Handle::SetDelayTime(int delayTime)
     return 0;
 }
 
-bool Handle::IsButtonPress()
+bool Handle::IsPush()
 {
     return m_pushFunctionFlag;
 }
 
-int Handle::GetButtonFunc()
+int Handle::GetPushFunc()
 {
     return m_pushFunctionIndex;
+}
+
+int Handle::GetWeldFunc()
+{
+    return m_weldFunction;
+}
+
+int Handle::Push(cJSON *root)
+{
+    if(m_pushFunctionFlag)
+    {
+        cJSON_AddNumberToObject(root, "buttonFunction", m_pushFunctionIndex);
+    }
+    m_pushFunctionFlag = false;
+    m_pushFunctionIndex = 0;
+    m_buttonIndex = 0;
+}
+
+void Handle::ExeHandleAction(std::vector<int> endDI)
+{
+    if (endDI == m_buttonDefault) // 如果信号是松开的时候
+    {
+        OnButtonReleaseAction();
+    }
+    else // 如果按下
+    {
+        OnButtonPressAction(endDI);
+    }
 }
 
 void Handle::GetButtonPressedIndexOf6ButtonHandleForPro(std::vector<int> endDI)
@@ -110,10 +139,10 @@ void Handle::OnButtonReleaseAction()
         m_pushFunctionFlag = true;
         break;
     case 3:
-        // 停止送丝
+        m_weldFunction = StopPushWire;// 停止送丝
         break;
     case 4:
-        // 停止退丝
+        m_weldFunction = StopPullWire;// 停止退丝
         break;
     case 5:
         m_pushFunctionIndex = CursorDown;
@@ -148,10 +177,10 @@ void Handle::OnButtonPressAction(std::vector<int> endDI)
         m_pressTime += m_delayTime;
         break;
     case 3:
-        // 送丝
+        m_weldFunction = StartPushWire;
         break;
     case 4:
-        // 退丝
+        m_weldFunction = StartPullWire;
         break;
     case 5:
         break;
@@ -159,17 +188,5 @@ void Handle::OnButtonPressAction(std::vector<int> endDI)
         break;
     default:
         break;
-    }
-}
-
-void Handle::ExeHandleAction(std::vector<int> endDI)
-{
-    if (endDI == m_buttonDefault) // 如果信号是松开的时候
-    {
-        OnButtonReleaseAction();
-    }
-    else // 如果按下
-    {
-        OnButtonPressAction(endDI);
     }
 }
