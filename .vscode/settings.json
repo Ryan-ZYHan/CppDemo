@@ -54,6 +54,10 @@
         "forward_list": "cpp",
         "filesystem": "cpp",
         "numeric": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "complex": "cpp",
+        "condition_variable": "cpp",
+        "regex": "cpp",
+        "mutex": "cpp"
     }
 }

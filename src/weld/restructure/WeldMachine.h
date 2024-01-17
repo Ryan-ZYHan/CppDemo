@@ -4,14 +4,13 @@
 #include <vector>
 #include <string>
 #include "Constant.h"
+#include "ErrorCode.h"
 
 using std::string;
 using std::vector;
 
 class WeldMachine
 {
-private:
-    /* data */
 public:
     virtual int OpendDevice() = 0;                             // 连接设备
     virtual int CloseDevice() = 0;                             // 关闭设备
@@ -28,10 +27,11 @@ public:
     virtual int StartFlow() = 0;                               // 开始送气
     virtual int StopFlow() = 0;                                // 停止送气
     virtual int DeviceCheck() = 0;                             // 设备检查
+    virtual string GetDeviceName() = 0;                        // 获取设备名
     virtual void DataCollection() = 0;                         // 数据采集
     virtual bool IsArcOnSuccess() = 0;                         // 起弧是否成功
-    virtual WeldParam Params() = 0;                            // 焊机数据（应该包括设置电流电压等参数，实时电流电压等参数，故障码等）
-    virtual ~WeldMachine();
+    virtual WeldParam GetParams() = 0;                         // 焊机数据（应该包括设置电流电压等参数，实时电流电压等参数，故障码等）
+    virtual ~WeldMachine() = default;
 };
 
 #endif
