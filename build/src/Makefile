@@ -476,32 +476,32 @@ usb2RS485/SerialPort.cpp.s:
 	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.s
 .PHONY : usb2RS485/SerialPort.cpp.s
 
-weld/Handle.o: weld/Handle.cpp.o
+weld/handle.o: weld/handle.cpp.o
 
-.PHONY : weld/Handle.o
+.PHONY : weld/handle.o
 
 # target to build an object file
-weld/Handle.cpp.o:
-	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.o
-.PHONY : weld/Handle.cpp.o
+weld/handle.cpp.o:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.o
+.PHONY : weld/handle.cpp.o
 
-weld/Handle.i: weld/Handle.cpp.i
+weld/handle.i: weld/handle.cpp.i
 
-.PHONY : weld/Handle.i
+.PHONY : weld/handle.i
 
 # target to preprocess a source file
-weld/Handle.cpp.i:
-	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.i
-.PHONY : weld/Handle.cpp.i
+weld/handle.cpp.i:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.i
+.PHONY : weld/handle.cpp.i
 
-weld/Handle.s: weld/Handle.cpp.s
+weld/handle.s: weld/handle.cpp.s
 
-.PHONY : weld/Handle.s
+.PHONY : weld/handle.s
 
 # target to generate assembly for a file
-weld/Handle.cpp.s:
-	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.s
-.PHONY : weld/Handle.cpp.s
+weld/handle.cpp.s:
+	cd /home/hans/test/serial/build && $(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.s
+.PHONY : weld/handle.cpp.s
 
 # Help Target
 help:
@@ -551,9 +551,9 @@ help:
 	@echo "... usb2RS485/SerialPort.o"
 	@echo "... usb2RS485/SerialPort.i"
 	@echo "... usb2RS485/SerialPort.s"
-	@echo "... weld/Handle.o"
-	@echo "... weld/Handle.i"
-	@echo "... weld/Handle.s"
+	@echo "... weld/handle.o"
+	@echo "... weld/handle.i"
+	@echo "... weld/handle.s"
 .PHONY : help
 
 

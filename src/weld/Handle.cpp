@@ -1,7 +1,20 @@
 #include "Handle.h"
 #include "elog.h"
 #include "HRSDK/HR_Pro.h"
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
+Handle::Handle()
+{
+
+}
+
+Handle::~Handle()
+{
+    close(m_sockfd);
+}
 
 int Handle::SetRobotModel(RobotModel robotModel)
 {
@@ -51,13 +64,13 @@ int Handle::GetWeldFunc()
 
 int Handle::Push(cJSON *root)
 {
-    if(m_pushFunctionFlag)
+    if (m_pushFunctionFlag)
     {
         cJSON_AddNumberToObject(root, "buttonFunction", m_pushFunctionIndex);
+        m_pushFunctionFlag = false;
+        m_pushFunctionIndex = 0;
+        m_buttonIndex = 0;
     }
-    m_pushFunctionFlag = false;
-    m_pushFunctionIndex = 0;
-    m_buttonIndex = 0;
 }
 
 void Handle::ExeHandleAction(std::vector<int> endDI)
@@ -69,6 +82,15 @@ void Handle::ExeHandleAction(std::vector<int> endDI)
     else // 如果按下
     {
         OnButtonPressAction(endDI);
+    }
+}
+
+void Handle::Start()
+{
+    std::vector<int> endDIVec;
+    if (RecevieEndDI(endDIVec))
+    {
+        ExeHandleAction(endDIVec);
     }
 }
 
@@ -102,6 +124,7 @@ void Handle::OnButtonReleaseAction()
 {
     if (0 == m_buttonIndex)
     {
+        m_weldFunction = 0;
         return;
     }
     if (m_buttonIndex > 0)
@@ -139,10 +162,10 @@ void Handle::OnButtonReleaseAction()
         m_pushFunctionFlag = true;
         break;
     case 3:
-        m_weldFunction = StopPushWire;// 停止送丝
+        m_weldFunction = StopPushWire; // 停止送丝
         break;
     case 4:
-        m_weldFunction = StopPullWire;// 停止退丝
+        m_weldFunction = StopPullWire; // 停止退丝
         break;
     case 5:
         m_pushFunctionIndex = CursorDown;
@@ -172,9 +195,11 @@ void Handle::OnButtonPressAction(std::vector<int> endDI)
     {
     case 1:
         m_pressTime += m_delayTime;
+        m_weldFunction = 0;
         break;
     case 2:
         m_pressTime += m_delayTime;
+        m_weldFunction = 0;
         break;
     case 3:
         m_weldFunction = StartPushWire;
@@ -183,10 +208,108 @@ void Handle::OnButtonPressAction(std::vector<int> endDI)
         m_weldFunction = StartPullWire;
         break;
     case 5:
+        m_weldFunction = 0;
         break;
     case 6:
+        m_weldFunction = 0;
         break;
     default:
         break;
     }
+}
+
+bool Handle::SocketConnect()
+{
+    const char *serverIP = m_ipAddress.c_str();
+    int portNumber = m_port;
+
+    // 关闭现有的套接字连接（如果存在）
+    if (m_sockfd != -1)
+    {
+        close(m_sockfd);
+    }
+
+    // 创建新的套接字
+    m_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (m_sockfd == -1)
+    {
+        HR_LOG_Info("Create Socket Error!");
+        return false;
+    }
+
+    // 连接到服务器端
+    struct sockaddr_in serverAddr;
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(portNumber);
+    if (inet_pton(AF_INET, serverIP, &(serverAddr.sin_addr)) <= 0)
+    {
+        HR_LOG_Info("Invalid IP Address!");
+        close(m_sockfd);
+        return false;
+    }
+
+    int connectResult = connect(m_sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
+    if (connectResult == -1)
+    {
+        HR_LOG_Info("Socket Connect Error!");
+        close(m_sockfd);
+        return false;
+    }
+
+    return true;
+}
+
+void Handle::GetEndDIFromString(std::vector<int> &endDI, string charArray)
+{
+    // 要查找的目标字符串
+    std::string targetString = "EndDI";
+
+    // 在原始字符串中查找目标字符串
+    size_t pos = charArray.find(targetString);
+
+    if (pos != std::string::npos)
+    {
+        // 找到目标字符串后，找到中括号的位置
+        size_t startBracket = charArray.find('[', pos);
+        size_t endBracket = charArray.find(']', startBracket);
+
+        if (startBracket != std::string::npos && endBracket != std::string::npos)
+        {
+            // 提取中括号内的内容
+            std::string content = charArray.substr(startBracket + 1, endBracket - startBracket - 1);
+
+            // 将内容解析为整数并存储到 std::vector<int> 中
+            std::vector<int> endDI;
+            size_t start = 0;
+            size_t commaPos = content.find(',');
+
+            while (commaPos != std::string::npos)
+            {
+                endDI.push_back(std::stoi(content.substr(start, commaPos - start)));
+                start = commaPos + 1;
+                commaPos = content.find(',', start);
+            }
+
+            // 处理最后一个数字
+            endDI.push_back(std::stoi(content.substr(start)));
+        }
+    }
+}
+
+bool Handle::RecevieEndDI(std::vector<int> &endDI)
+{
+    char buffer[4096]; // 缓冲区大小
+
+    // 从套接字读取数据
+    int bytesRead = read(m_sockfd, buffer, sizeof(buffer));
+    if (bytesRead <= 0)
+    {
+        return false;
+    }
+    // 复制从第12个位置开始的数据到新的缓冲区
+    int startPos = 12;                        // 起始位置
+    int newDataLength = bytesRead - startPos; // 需要复制的数据长度
+
+    std::string receivedData(buffer + startPos, newDataLength);
+    GetEndDIFromString(endDI, receivedData);
 }

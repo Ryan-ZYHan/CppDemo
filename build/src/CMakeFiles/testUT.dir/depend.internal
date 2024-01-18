@@ -53,9 +53,6 @@ src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o
  /home/hans/test/serial/src/usb2RS485/SerialPort.cpp
  /home/hans/test/serial/src/usb2RS485/SerialPort.h
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o
- ../include/cJSON/cJSON.h
- ../include/easylogger/inc/elog.h
- ../include/easylogger/inc/elog_cfg.h
- /home/hans/test/serial/src/weld/Handle.cpp
- /home/hans/test/serial/src/weld/Handle.h
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o
+ ../include/nlohmann/json.hpp
+ /home/hans/test/serial/src/weld/handle.cpp

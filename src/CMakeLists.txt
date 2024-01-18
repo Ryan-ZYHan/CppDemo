@@ -22,8 +22,8 @@ file(GLOB_RECURSE TestSRC
                 # ./usb2RS485/haibaoTest.cpp
                 # ./inherit/main.cpp
                 # ./arrayTest/main.cpp
-                # ./weld/handle.cpp
-                ./weld/Handle.cpp
+                ./weld/handle.cpp
+                # ./weld/Handle.cpp
                 # ./socket/readJsonFormIPandPort.cpp
                 )
 

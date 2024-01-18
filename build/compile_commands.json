@@ -66,7 +66,7 @@
 },
 {
   "directory": "/home/hans/test/serial/build/src",
-  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/inc -I/home/hans/test/serial/include/easylogger/plugins -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port -I/home/hans/test/serial/include/cJSON  -g   -std=c++1z -o CMakeFiles/testUT.dir/weld/Handle.cpp.o -c /home/hans/test/serial/src/weld/Handle.cpp",
-  "file": "/home/hans/test/serial/src/weld/Handle.cpp"
+  "command": "/usr/bin/x86_64-linux-gnu-g++-7   -I/home/hans/test/serial/include -I/home/hans/test/serial/include/easylogger/inc -I/home/hans/test/serial/include/easylogger/plugins -I/home/hans/test/serial/include/easylogger/src -I/home/hans/test/serial/include/easylogger/port -I/home/hans/test/serial/include/cJSON  -g   -std=c++1z -o CMakeFiles/testUT.dir/weld/handle.cpp.o -c /home/hans/test/serial/src/weld/handle.cpp",
+  "file": "/home/hans/test/serial/src/weld/handle.cpp"
 }
 ]

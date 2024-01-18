@@ -53,9 +53,6 @@ src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o: ../include/FileExtensi
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o: ../src/usb2RS485/SerialPort.cpp
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o: ../src/usb2RS485/SerialPort.h
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: ../include/cJSON/cJSON.h
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: ../include/easylogger/inc/elog.h
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: ../include/easylogger/inc/elog_cfg.h
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: ../src/weld/Handle.cpp
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: ../src/weld/Handle.h
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o: ../include/nlohmann/json.hpp
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o: ../src/weld/handle.cpp
 

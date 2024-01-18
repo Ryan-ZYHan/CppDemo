@@ -20,7 +20,7 @@
 #include "HRSDK/HR_RobotStruct.h"
 using json = nlohmann::json;
 
-std::string m_ipAddress = "10.20.60.182";
+std::string m_ipAddress = "10.20.60.160";
 int port = 10004;
 int buttonIndex = 0;
 int endDO[8] = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -309,6 +309,46 @@ bool ReceiveDataFromSocket(int &sockfd, _ST_RTInfo &info)
     }
 }
 
+void ReceiveCharDataFromSocket(std::vector<int> &endDI,string charArray)
+{
+    // 要查找的目标字符串
+    std::string targetString = "EndDI";
+
+    // 在原始字符串中查找目标字符串
+    size_t pos = charArray.find(targetString);
+
+    if (pos != std::string::npos) {
+        // 找到目标字符串后，找到中括号的位置
+        size_t startBracket = charArray.find('[', pos);
+        size_t endBracket = charArray.find(']', startBracket);
+
+        if (startBracket != std::string::npos && endBracket != std::string::npos) {
+            // 提取中括号内的内容
+            std::string content = charArray.substr(startBracket + 1, endBracket - startBracket - 1);
+
+            // 将内容解析为整数并存储到 std::vector<int> 中
+            std::vector<int> endDI;
+            size_t start = 0;
+            size_t commaPos = content.find(',');
+
+            while (commaPos != std::string::npos) {
+                endDI.push_back(std::stoi(content.substr(start, commaPos - start)));
+                start = commaPos + 1;
+                commaPos = content.find(',', start);
+            }
+
+            // 处理最后一个数字
+            endDI.push_back(std::stoi(content.substr(start)));
+
+            // 输出结果
+            for (int value : endDI) {
+                std::cout << value << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+}
+
 bool RecevieJsonEndDIFromSocket(int &sockfd, std::vector<int> &endDI)
 {
     char buffer[4096]; // 缓冲区大小
@@ -331,6 +371,7 @@ bool RecevieJsonEndDIFromSocket(int &sockfd, std::vector<int> &endDI)
 
     // 将接收到的数据转换为字符串
     std::string receivedData(buffer + startPos, newDataLength);
+    ReceiveCharDataFromSocket(endDI,receivedData);
     // 解析 JSON 数据
     try
     {

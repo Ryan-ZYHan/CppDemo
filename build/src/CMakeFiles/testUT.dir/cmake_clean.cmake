@@ -12,7 +12,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.o"
   "CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.o"
   "CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o"
-  "CMakeFiles/testUT.dir/weld/Handle.cpp.o"
+  "CMakeFiles/testUT.dir/weld/handle.cpp.o"
   "../testUT.pdb"
   "../testUT"
 )

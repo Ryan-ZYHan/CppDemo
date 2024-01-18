@@ -369,28 +369,28 @@ src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o.provides: src/CMakeFiles/te
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o.provides.build: src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o
 
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: src/CMakeFiles/testUT.dir/flags.make
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o: ../src/weld/Handle.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hans/test/serial/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/testUT.dir/weld/Handle.cpp.o"
-	cd /home/hans/test/serial/build/src && /usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/testUT.dir/weld/Handle.cpp.o -c /home/hans/test/serial/src/weld/Handle.cpp
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o: src/CMakeFiles/testUT.dir/flags.make
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o: ../src/weld/handle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hans/test/serial/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/testUT.dir/weld/handle.cpp.o"
+	cd /home/hans/test/serial/build/src && /usr/bin/x86_64-linux-gnu-g++-7  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/testUT.dir/weld/handle.cpp.o -c /home/hans/test/serial/src/weld/handle.cpp
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/testUT.dir/weld/Handle.cpp.i"
-	cd /home/hans/test/serial/build/src && /usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hans/test/serial/src/weld/Handle.cpp > CMakeFiles/testUT.dir/weld/Handle.cpp.i
+src/CMakeFiles/testUT.dir/weld/handle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/testUT.dir/weld/handle.cpp.i"
+	cd /home/hans/test/serial/build/src && /usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/hans/test/serial/src/weld/handle.cpp > CMakeFiles/testUT.dir/weld/handle.cpp.i
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testUT.dir/weld/Handle.cpp.s"
-	cd /home/hans/test/serial/build/src && /usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hans/test/serial/src/weld/Handle.cpp -o CMakeFiles/testUT.dir/weld/Handle.cpp.s
+src/CMakeFiles/testUT.dir/weld/handle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testUT.dir/weld/handle.cpp.s"
+	cd /home/hans/test/serial/build/src && /usr/bin/x86_64-linux-gnu-g++-7 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/hans/test/serial/src/weld/handle.cpp -o CMakeFiles/testUT.dir/weld/handle.cpp.s
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.requires:
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o.requires:
 
-.PHONY : src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.requires
+.PHONY : src/CMakeFiles/testUT.dir/weld/handle.cpp.o.requires
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.provides: src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.requires
-	$(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.provides.build
-.PHONY : src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.provides
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o.provides: src/CMakeFiles/testUT.dir/weld/handle.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/testUT.dir/build.make src/CMakeFiles/testUT.dir/weld/handle.cpp.o.provides.build
+.PHONY : src/CMakeFiles/testUT.dir/weld/handle.cpp.o.provides
 
-src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.provides.build: src/CMakeFiles/testUT.dir/weld/Handle.cpp.o
+src/CMakeFiles/testUT.dir/weld/handle.cpp.o.provides.build: src/CMakeFiles/testUT.dir/weld/handle.cpp.o
 
 
 # Object files for target testUT
@@ -408,7 +408,7 @@ testUT_OBJECTS = \
 "CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.o" \
 "CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.o" \
 "CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o" \
-"CMakeFiles/testUT.dir/weld/Handle.cpp.o"
+"CMakeFiles/testUT.dir/weld/handle.cpp.o"
 
 # External object files for target testUT
 testUT_EXTERNAL_OBJECTS =
@@ -426,7 +426,7 @@ testUT: src/CMakeFiles/testUT.dir/__/include/easylogger/src/elog_utils.c.o
 testUT: src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.o
 testUT: src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.o
 testUT: src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o
-testUT: src/CMakeFiles/testUT.dir/weld/Handle.cpp.o
+testUT: src/CMakeFiles/testUT.dir/weld/handle.cpp.o
 testUT: src/CMakeFiles/testUT.dir/build.make
 testUT: ../libs/libHR_Pro.so
 testUT: /usr/local/lib/libserialport.so
@@ -452,7 +452,7 @@ src/CMakeFiles/testUT.dir/requires: src/CMakeFiles/testUT.dir/__/include/easylog
 src/CMakeFiles/testUT.dir/requires: src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON.c.o.requires
 src/CMakeFiles/testUT.dir/requires: src/CMakeFiles/testUT.dir/__/include/cJSON/cJSON_Utils.c.o.requires
 src/CMakeFiles/testUT.dir/requires: src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o.requires
-src/CMakeFiles/testUT.dir/requires: src/CMakeFiles/testUT.dir/weld/Handle.cpp.o.requires
+src/CMakeFiles/testUT.dir/requires: src/CMakeFiles/testUT.dir/weld/handle.cpp.o.requires
 
 .PHONY : src/CMakeFiles/testUT.dir/requires
 
