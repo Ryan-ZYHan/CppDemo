@@ -50,9 +50,8 @@ src/CMakeFiles/testUT.dir/__/include/Checkout.cpp.o: ../include/Checkout.h
 src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o: ../include/FileExtension.cpp
 src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o: ../include/FileExtension.h
 
+src/CMakeFiles/testUT.dir/operator/main.cpp.o: ../src/operator/main.cpp
+
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o: ../src/usb2RS485/SerialPort.cpp
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o: ../src/usb2RS485/SerialPort.h
-
-src/CMakeFiles/testUT.dir/weld/handle.cpp.o: ../include/nlohmann/json.hpp
-src/CMakeFiles/testUT.dir/weld/handle.cpp.o: ../src/weld/handle.cpp
 

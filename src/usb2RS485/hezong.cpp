@@ -21,7 +21,7 @@ using std::endl;
 using std::map;
 using std::string;
 
-void Connect(SerialPort _serialPort)
+void Connect(SerialPort *_serialPort)
 {
     char FlamaRS485Data[59];
     FlamaRS485Data[0] = '\x01';               // 设备号
@@ -42,11 +42,11 @@ void Connect(SerialPort _serialPort)
     }
     FlamaRS485Data[57] = '\x5f';
     FlamaRS485Data[58] = '\x6a';
-    int writeSize = _serialPort.write(FlamaRS485Data, 59);
+    int writeSize = _serialPort->write(FlamaRS485Data, 59);
     cout << "writeSize:" << writeSize << endl;
 }
 
-void ReadData(SerialPort _serialPort,int startAddress,int byteSize)
+void ReadData(SerialPort *_serialPort,int startAddress,int byteSize)
 {
     cout << "startAddress = " << startAddress << ",byteSize = " << byteSize << endl ;
     char writeData[] = {'\x01', '\x03', '\x00', startAddress, '\x00', byteSize, '\x84', '\x05'};
@@ -54,11 +54,11 @@ void ReadData(SerialPort _serialPort,int startAddress,int byteSize)
     Checkout::CalculateCRC(writeData, 6, crc);
     writeData[6] = static_cast<char>(crc[0]);
     writeData[7] = static_cast<char>(crc[1]);
-    int writeSize = _serialPort.write(writeData, 8);
+    int writeSize = _serialPort->write(writeData, 8);
     cout << "writeSize:" << writeSize << endl;
     usleep(100 * 1000);
     char readData[47];
-    int readSize = _serialPort.read(readData, 47);
+    int readSize = _serialPort->read(readData, 47);
     cout << "readSize:" << readSize << endl;
     if(readSize >0)
     {
@@ -71,14 +71,31 @@ void ReadData(SerialPort _serialPort,int startAddress,int byteSize)
     }
 }
 
-void ReadAllData(SerialPort _serialPort)
+void ReadAllData(SerialPort *_serialPort)
 {
     char writeData[] = {'\x01', '\x03', '\x00', '\x00', '\x00', '\x15', '\x84', '\x05'};
-    int writeSize = _serialPort.write(writeData, 8);
+    int writeSize = _serialPort->write(writeData, 8);
     cout << "writeSize:" << writeSize << endl;
     usleep(100 * 1000);
     char readData[47];
-    int readSize = _serialPort.read(readData, 47);
+    int readSize = _serialPort->read(readData, 47);
+    cout << "readSize:" << readSize << endl;
+    if(readSize >0)
+    {
+        cout << "result:";
+        for (int i=0;i<readSize;i++)
+        {
+            cout << Int2Hex(static_cast<int>(readData[i])) << ",";
+        }
+        cout << endl;
+    }
+}
+
+void ReadOnly(SerialPort *_serialPort)
+{
+    usleep(100 * 1000);
+    char readData[47];
+    int readSize = _serialPort->read(readData, 47);
     cout << "readSize:" << readSize << endl;
     if(readSize >0)
     {
@@ -115,12 +132,17 @@ int main()
     }
     _serialPort.configure(9600, 8, 1, SP_PARITY_NONE); // 和宗焊机设置
 
-    Connect(_serialPort);
-    usleep(100*1000);
+    ReadOnly(&_serialPort);
 
-    ReadAllData(_serialPort);
-    usleep(100*1000);
+    // Connect(&_serialPort);
+    // usleep(100*1000);
 
-    ReadData(_serialPort,4,2);
-    usleep(100*1000);    
+    // ReadAllData(&_serialPort);
+    // usleep(100*1000);
+
+    // ReadData(&_serialPort,0,6);
+    // usleep(100*1000);    
+
+    // ReadData(&_serialPort,0,21);
+    // usleep(100*1000);  
 }

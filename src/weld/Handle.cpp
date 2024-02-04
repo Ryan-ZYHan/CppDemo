@@ -1,14 +1,16 @@
 #include "Handle.h"
 #include "elog.h"
 #include "HRSDK/HR_Pro.h"
+#include "GTAW_Control.h"
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
 
+extern GTAW_Control GTAW;
+
 Handle::Handle()
 {
-
 }
 
 Handle::~Handle()
@@ -45,6 +47,13 @@ int Handle::SetDelayTime(int delayTime)
     }
     m_delayTime = delayTime;
     return 0;
+}
+
+int Handle::SetHandleEnable(bool handleEnable)
+{
+    HR_LOG_Info("enter Handle::SetHandleEnable.");
+    m_handleEnable = handleEnable;
+    HR_LOG_Info("leave Handle::SetHandleEnable. m_handleEnable = %d.", m_handleEnable);
 }
 
 bool Handle::IsPush()
@@ -87,10 +96,30 @@ void Handle::ExeHandleAction(std::vector<int> endDI)
 
 void Handle::Start()
 {
-    std::vector<int> endDIVec;
-    if (RecevieEndDI(endDIVec))
+    if (m_handleEnable)
     {
-        ExeHandleAction(endDIVec);
+        std::vector<int> endDIVec;
+        if (RecevieEndDI(endDIVec))
+        {
+            ExeHandleAction(endDIVec);
+            switch (GetWeldFunc())
+            {
+            case WeldFunction::StartPushWire:
+                GTAW.StartPushWire();
+                break;
+            case WeldFunction::StopPushWire:
+                GTAW.StopPushWire();
+                break;
+            case WeldFunction::StartPullWire:
+                GTAW.StartPullWire();
+                break;
+            case WeldFunction::StopPullWire:
+                GTAW.StopPullWire();
+                break;
+            default:
+                break;
+            }
+        }
     }
 }
 
