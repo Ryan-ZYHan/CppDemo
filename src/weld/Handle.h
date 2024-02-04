@@ -38,6 +38,7 @@ public:
     int SetRobotModel(RobotModel robotModel);          // 设置机器人型号
     int SetPressTimeThreshold(int pressTimeThreshold); // 设置按压时间阈值以区分长短按
     int SetDelayTime(int delayTime);                   // 设置周期时间
+    int SetHandleEnable(bool handleEnable);            // 设置手柄功能开关
     bool IsPush();                                     // 是否推送
     int GetPushFunc();                                 // 获得按钮按下时向前端推送功能，返回见ButtonFunction
     int GetWeldFunc();                                 // 获得按钮按下时焊机执行功能，返回见WeldFunction，（后续5.0应将焊机功能放在该类中）
@@ -55,6 +56,7 @@ private:
     int m_delayTime = 50;             // 接收数据周期，10004、100014:50ms；10005、10015:100ms；10006、10016:200ms
     int m_weldFunction = 0;           // 按钮按下时焊机需要执行的功能
     int m_sockfd = 0;                 // 读取端口套接字
+    bool m_handleEnable = false;      // 手柄功能开关信号
     string m_ipAddress = "127.0.0.1"; // IP地址
     int m_port = 10004;               // 端口号
 

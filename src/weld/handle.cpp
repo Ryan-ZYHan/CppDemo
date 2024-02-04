@@ -1,198 +1,268 @@
-#include <iostream>
-#include <algorithm>
-#include <map>
-#include <array>
-#include <thread>
-#include <chrono>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <cstring>
-#include <arpa/inet.h>
-#include <bitset>
-#include <iostream>
-#include <nlohmann/json.hpp>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
+#include "Handle.h"
+#include "elog.h"
 #include "HRSDK/HR_Pro.h"
-#include "HRSDK/HR_RobotStruct.h"
-using json = nlohmann::json;
+#include "GTAW_Control.h"
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
-std::string m_ipAddress = "10.20.60.160";
-int port = 10004;
-int buttonIndex = 0;
-int endDO[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-std::vector<int> buttonDefault = {1, 1, 1, 1};
-std::vector<int> button1 = {0, 1, 1, 1};
-std::vector<int> button2 = {1, 0, 1, 1};
-std::vector<int> button3 = {0, 0, 1, 1};
-std::vector<int> button4 = {1, 1, 0, 1};
-std::vector<int> button5 = {0, 1, 0, 1};
-std::vector<int> button6 = {1, 0, 0, 1};
-int pressTime = 0;
-int pushFunctionIndex = 0;
-bool pushFunctionFlag = false;
+extern GTAW_Control GTAW;
 
-std::map<int, std::vector<int>> buttonMap{
-    {1, button1},
-    {2, button2},
-    {3, button3},
-    {4, button4},
-    {5, button5},
-    {6, button6}};
-
-enum ButtonFunction // 按钮功能（推送前端的部分）
+Handle::Handle()
 {
-    AddLine = 1,                // 添加直线
-    AddCircularArc,             // 添加圆弧
-    AddStraightWeldingTemplate, // 添加直线焊接模板
-    AddArcWeldingTemplate,      // 添加圆弧焊接模板
-    CursorDown,                 // 光标下移
-    CursorUp,                   // 光标上移
-};
+}
 
-int GetButtonPressedIndexOf6ButtonHandleForPro(std::vector<int> endDI)
+Handle::~Handle()
+{
+    close(m_sockfd);
+}
+
+int Handle::SetRobotModel(RobotModel robotModel)
+{
+    HR_LOG_Info("enter Handle::SetRobotModel.");
+    m_robotModel = robotModel;
+
+    HR_LOG_Info("leave Handle::SetRobotModel.");
+    return 0;
+}
+
+int Handle::SetPressTimeThreshold(int pressTimeThreshold)
+{
+    if (pressTimeThreshold < 1000)
+    {
+        HR_LOG_Error("pressTimeThreshold is too small, pressTimeThreshold = %d", pressTimeThreshold);
+        return -1;
+    }
+    m_pressTimeThreshold = pressTimeThreshold;
+    return 0;
+}
+
+int Handle::SetDelayTime(int delayTime)
+{
+    if (delayTime != 50 || delayTime != 100 || delayTime != 200)
+    {
+        HR_LOG_Error("Wrong delayTime, delayTime = %d", delayTime);
+        return -1;
+    }
+    m_delayTime = delayTime;
+    return 0;
+}
+
+int Handle::SetHandleEnable(bool handleEnable)
+{
+    HR_LOG_Info("enter Handle::SetHandleEnable.");
+    m_handleEnable = handleEnable;
+    HR_LOG_Info("leave Handle::SetHandleEnable. m_handleEnable = %d.", m_handleEnable);
+}
+
+bool Handle::IsPush()
+{
+    return m_pushFunctionFlag;
+}
+
+int Handle::GetPushFunc()
+{
+    return m_pushFunctionIndex;
+}
+
+int Handle::GetWeldFunc()
+{
+    return m_weldFunction;
+}
+
+int Handle::Push(cJSON *root)
+{
+    if (m_pushFunctionFlag)
+    {
+        cJSON_AddNumberToObject(root, "buttonFunction", m_pushFunctionIndex);
+        m_pushFunctionFlag = false;
+        m_pushFunctionIndex = 0;
+        m_buttonIndex = 0;
+    }
+}
+
+void Handle::ExeHandleAction(std::vector<int> endDI)
+{
+    if (endDI == m_buttonDefault) // 如果信号是松开的时候
+    {
+        OnButtonReleaseAction();
+    }
+    else // 如果按下
+    {
+        OnButtonPressAction(endDI);
+    }
+}
+
+void Handle::Start()
+{
+    if (m_handleEnable)
+    {
+        std::vector<int> endDIVec;
+        if (RecevieEndDI(endDIVec))
+        {
+            ExeHandleAction(endDIVec);
+            switch (GetWeldFunc())
+            {
+            case WeldFunction::StartPushWire:
+                GTAW.StartPushWire();
+                break;
+            case WeldFunction::StopPushWire:
+                GTAW.StopPushWire();
+                break;
+            case WeldFunction::StartPullWire:
+                GTAW.StartPullWire();
+                break;
+            case WeldFunction::StopPullWire:
+                GTAW.StopPullWire();
+                break;
+            default:
+                break;
+            }
+        }
+    }
+}
+
+void Handle::GetButtonPressedIndexOf6ButtonHandleForPro(std::vector<int> endDI)
 {
     for (int i = 1; i < 7; i++)
     {
-        if (endDI == buttonMap[i])
+        if (endDI == m_buttonMap[i])
         {
-            cout << "第" << i << "个按钮被按下" << endl;
-            return i;
+            m_buttonIndex = i;
+            HR_LOG_Debug("button index is %d", i);
+            return;
         }
     }
-    return -1; // 组合键或未知情况
+    HR_LOG_Debug("wrong button press.");
 }
 
-void SetEndDO()
+void Handle::SetEndDO()
 {
-    // cout << "writeDO" << endDO[0] << "," << endDO[1] << "," << endDO[2] << "," << endDO[3] << ","
-    //      << endDO[4] << "," << endDO[5] << "," << endDO[6] << "," << endDO[7] << "," << endl;
     HRIF_SetEndDO(0, 0, 2, 0); // 锁存线置低
     for (int i = 0; i < 8; i++)
     {
-        HRIF_SetEndDO(0, 0, 1, endDO[i]); // 置数据位
-        HRIF_SetEndDO(0, 0, 0, 1);        // 时钟线置高
-        HRIF_SetEndDO(0, 0, 0, 0);        // 时钟线置低
+        HRIF_SetEndDO(0, 0, 1, m_endDO[i]); // 置数据位
+        HRIF_SetEndDO(0, 0, 0, 1);          // 时钟线置高
+        HRIF_SetEndDO(0, 0, 0, 0);          // 时钟线置低
     }
     HRIF_SetEndDO(0, 0, 2, 1); // 锁存线置高
 }
 
-void HandleFunc(std::vector<int> endDI)
+void Handle::OnButtonReleaseAction()
 {
-    if (endDI == buttonDefault) // 如果信号是松开的时候
+    if (0 == m_buttonIndex)
     {
-        if (0 == buttonIndex)
-        {
-            return;
-        }
-        if (buttonIndex > 0)
-        {
-            cout << "第" << buttonIndex << "个按钮松开" << endl;
-            for (int i = 0; i < 8; i++)
-            {
-                endDO[i] = 0;
-            }
-            SetEndDO();
-        }
-
-        switch (buttonIndex)
-        {
-        case 1:
-            if (pressTime < 1000) // 短按
-            {
-                pushFunctionIndex = AddLine;
-            }
-            else // 长按
-            {
-                pushFunctionIndex = AddCircularArc;
-            }
-            pushFunctionFlag = true;
-            break;
-        case 2:
-            if (pressTime < 1000) // 短按
-            {
-                pushFunctionIndex = AddStraightWeldingTemplate;
-            }
-            else // 长按
-            {
-                pushFunctionIndex = AddArcWeldingTemplate;
-            }
-            pushFunctionFlag = true;
-            break;
-        case 3:
-            // 停止送丝
-            break;
-        case 4:
-            // 停止退丝
-            break;
-        case 5:
-            pushFunctionIndex = CursorDown;
-            pushFunctionFlag = true;
-            break;
-        case 6:
-            pushFunctionIndex = CursorUp;
-            pushFunctionFlag = true;
-            break;
-        default:
-            break;
-        }
-        pressTime = 0;
-        buttonIndex = 0;
+        m_weldFunction = 0;
+        return;
     }
-    else // 如果按下
+    if (m_buttonIndex > 0)
     {
-        buttonIndex = GetButtonPressedIndexOf6ButtonHandleForPro(endDI);
-        if (buttonIndex > 0)
+        HR_LOG_Debug("button %d release.", m_buttonIndex);
+        for (int i = 0; i < 8; i++)
         {
-            endDO[8 - buttonIndex] = 1;
-            SetEndDO();
+            m_endDO[i] = 0;
         }
+        SetEndDO();
+    }
 
-        switch (buttonIndex)
+    switch (m_buttonIndex)
+    {
+    case 1:
+        if (m_pressTime < m_pressTimeThreshold) // 短按
         {
-        case 1:
-            pressTime += 50;
-            break;
-        case 2:
-            pressTime += 50;
-            break;
-        case 3:
-            // 送丝
-            break;
-        case 4:
-            // 退丝
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-        default:
-            break;
+            m_pushFunctionIndex = AddLine;
         }
+        else // 长按
+        {
+            m_pushFunctionIndex = AddCircularArc;
+        }
+        m_pushFunctionFlag = true;
+        break;
+    case 2:
+        if (m_pressTime < m_pressTimeThreshold) // 短按
+        {
+            m_pushFunctionIndex = AddStraightWeldingTemplate;
+        }
+        else // 长按
+        {
+            m_pushFunctionIndex = AddArcWeldingTemplate;
+        }
+        m_pushFunctionFlag = true;
+        break;
+    case 3:
+        m_weldFunction = StopPushWire; // 停止送丝
+        break;
+    case 4:
+        m_weldFunction = StopPullWire; // 停止退丝
+        break;
+    case 5:
+        m_pushFunctionIndex = CursorDown;
+        m_pushFunctionFlag = true;
+        break;
+    case 6:
+        m_pushFunctionIndex = CursorUp;
+        m_pushFunctionFlag = true;
+        break;
+    default:
+        break;
+    }
+    m_pressTime = 0;
+    m_buttonIndex = 0;
+}
+
+void Handle::OnButtonPressAction(std::vector<int> endDI)
+{
+    GetButtonPressedIndexOf6ButtonHandleForPro(endDI);
+    if (m_buttonIndex > 0)
+    {
+        m_endDO[8 - m_buttonIndex] = 1;
+        SetEndDO();
+    }
+
+    switch (m_buttonIndex)
+    {
+    case 1:
+        m_pressTime += m_delayTime;
+        m_weldFunction = 0;
+        break;
+    case 2:
+        m_pressTime += m_delayTime;
+        m_weldFunction = 0;
+        break;
+    case 3:
+        m_weldFunction = StartPushWire;
+        break;
+    case 4:
+        m_weldFunction = StartPullWire;
+        break;
+    case 5:
+        m_weldFunction = 0;
+        break;
+    case 6:
+        m_weldFunction = 0;
+        break;
+    default:
+        break;
     }
 }
 
-bool SocketConnect(int &sockfd)
+bool Handle::SocketConnect()
 {
     const char *serverIP = m_ipAddress.c_str();
-    int portNumber = port;
-    cout << "IP = " << m_ipAddress.c_str() << ", port = " << portNumber << endl;
+    int portNumber = m_port;
 
     // 关闭现有的套接字连接（如果存在）
-    if (sockfd != -1)
+    if (m_sockfd != -1)
     {
-        close(sockfd);
+        close(m_sockfd);
     }
 
     // 创建新的套接字
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1)
+    m_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (m_sockfd == -1)
     {
-        // 处理套接字创建失败的情况
-        // HR_LOG_Info( "Create Socket Error!");
+        HR_LOG_Info("Create Socket Error!");
         return false;
     }
 
@@ -202,114 +272,23 @@ bool SocketConnect(int &sockfd)
     serverAddr.sin_port = htons(portNumber);
     if (inet_pton(AF_INET, serverIP, &(serverAddr.sin_addr)) <= 0)
     {
-        // HR_LOG_Info( "Invalid IP Address!");
-        close(sockfd);
+        HR_LOG_Info("Invalid IP Address!");
+        close(m_sockfd);
         return false;
     }
 
-    int connectResult = connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
+    int connectResult = connect(m_sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
     if (connectResult == -1)
     {
-        // 处理连接失败的情况
-        // HR_LOG_Info( "Socket Connect Error!");
-        close(sockfd); // 关闭新套接字
+        HR_LOG_Info("Socket Connect Error!");
+        close(m_sockfd);
         return false;
     }
 
     return true;
 }
 
-bool ReceiveDataFromSocket(int &sockfd, _ST_RTInfo &info)
-{
-    try
-    {
-        // 两倍的内存
-        int bufferSize = 2 * sizeof(info);
-        char buffer[bufferSize];
-        // 接收数据
-        ssize_t bytesRead = recv(sockfd, buffer, bufferSize, 0);
-        if (bytesRead == -1)
-        {
-            if (!SocketConnect(sockfd))
-            {
-                // m_subscribedTag = -1;
-                return false;
-            }
-        }
-
-        // 拆解包
-        int dataSizeOffset = 8; // 数据长度的位置在第9到第12字节
-        int dataByteSize = 4;   // 四个字节用于存数据长度
-        if (bytesRead < dataSizeOffset + dataByteSize)
-        {
-            // std::cerr << "Invalid packet" << std::endl;
-            // close(sockfd);
-            return false;
-        }
-
-        // 获得包头位置(使用int指针查找)
-        std::bitset<32> searchBitset("00000000000000000000000001001100"); // "LTBR"的二进制表示
-        // int* intBuffer = reinterpret_cast<int*>(buffer); // 将buffer转换为int指针
-        int headerOffset = -1; // 未找到"LTBR"字符串
-        for (int i = 0; i < bufferSize / sizeof(int); i++)
-        {
-            std::bitset<32> byteBitset(static_cast<unsigned char>(buffer[i]));
-            if (byteBitset == searchBitset)
-            {
-                headerOffset = i * sizeof(int);
-                break;
-            }
-        }
-        if (headerOffset == -1)
-        {
-            return false;
-        }
-        // std::cout << "headerOffset int:" << headerOffset2 << std::endl;
-
-        // 获取数据长度
-        int dataSize; // 数据长度
-        if (bytesRead < headerOffset + dataSizeOffset + dataByteSize)
-        {
-            // std::cout << "数据缺失，没有数据长度" << std::endl;
-            return false;
-        }
-        std::memcpy(&dataSize, buffer + headerOffset + dataSizeOffset, dataByteSize);
-        // std::cout << "dataSize:" << dataSize << std::endl;
-
-        if (bytesRead < headerOffset + dataSizeOffset + dataByteSize + dataSize)
-        {
-            // std::cout   << "数据不完整"
-            //             << "bytesRead: " << bytesRead
-            //             << "headerOffset" << headerOffset
-            //             << "dataSizeOffset" << dataSizeOffset
-            //             << "dataByteSize" << dataByteSize
-            //             << "dataSize" << dataSize
-            //             <<  std::endl;
-            // close(sockfd);
-            return false;
-        }
-
-        if (dataSize < 0)
-        {
-            cout << "datasize < 0" << endl;
-            return false;
-        }
-        // else
-        // {
-        //     cout << "datasize = " << dataSize << endl;
-        // }
-        // dataSize = 872;
-        // 存储数据到结构体
-        std::memcpy(&info, buffer + headerOffset + dataSizeOffset + dataByteSize, dataSize);
-        return true;
-    }
-    catch (...)
-    {
-        return false;
-    }
-}
-
-void ReceiveCharDataFromSocket(std::vector<int> &endDI,string charArray)
+void Handle::GetEndDIFromString(std::vector<int> &endDI, string charArray)
 {
     // 要查找的目标字符串
     std::string targetString = "EndDI";
@@ -317,12 +296,14 @@ void ReceiveCharDataFromSocket(std::vector<int> &endDI,string charArray)
     // 在原始字符串中查找目标字符串
     size_t pos = charArray.find(targetString);
 
-    if (pos != std::string::npos) {
+    if (pos != std::string::npos)
+    {
         // 找到目标字符串后，找到中括号的位置
         size_t startBracket = charArray.find('[', pos);
         size_t endBracket = charArray.find(']', startBracket);
 
-        if (startBracket != std::string::npos && endBracket != std::string::npos) {
+        if (startBracket != std::string::npos && endBracket != std::string::npos)
+        {
             // 提取中括号内的内容
             std::string content = charArray.substr(startBracket + 1, endBracket - startBracket - 1);
 
@@ -331,7 +312,8 @@ void ReceiveCharDataFromSocket(std::vector<int> &endDI,string charArray)
             size_t start = 0;
             size_t commaPos = content.find(',');
 
-            while (commaPos != std::string::npos) {
+            while (commaPos != std::string::npos)
+            {
                 endDI.push_back(std::stoi(content.substr(start, commaPos - start)));
                 start = commaPos + 1;
                 commaPos = content.find(',', start);
@@ -339,140 +321,24 @@ void ReceiveCharDataFromSocket(std::vector<int> &endDI,string charArray)
 
             // 处理最后一个数字
             endDI.push_back(std::stoi(content.substr(start)));
-
-            // 输出结果
-            for (int value : endDI) {
-                std::cout << value << " ";
-            }
-            std::cout << std::endl;
         }
     }
 }
 
-bool RecevieJsonEndDIFromSocket(int &sockfd, std::vector<int> &endDI)
+bool Handle::RecevieEndDI(std::vector<int> &endDI)
 {
     char buffer[4096]; // 缓冲区大小
 
     // 从套接字读取数据
-    int bytesRead = read(sockfd, buffer, sizeof(buffer));
+    int bytesRead = read(m_sockfd, buffer, sizeof(buffer));
     if (bytesRead <= 0)
     {
-        std::cerr << "Error reading data" << std::endl;
         return false;
     }
     // 复制从第12个位置开始的数据到新的缓冲区
     int startPos = 12;                        // 起始位置
     int newDataLength = bytesRead - startPos; // 需要复制的数据长度
-    // for(int i=3000;i<bytesRead;i++)
-    // {
-    //     std::cout << buffer[i] << "," ;
-    // }
-    // std::cout  << "buffer over"<< endl;
 
-    // 将接收到的数据转换为字符串
     std::string receivedData(buffer + startPos, newDataLength);
-    ReceiveCharDataFromSocket(endDI,receivedData);
-    // 解析 JSON 数据
-    try
-    {
-        json jsonData = json::parse(receivedData);
-
-        // 获取 EndIO 对象
-        auto endIO = jsonData["EndIO"];
-
-        // 获取 EndDI 数组
-        auto EndDI = endIO["EndDI"];
-
-        // 打印 EndDI 数组的内容
-        // std::cout << "EndDI: " << EndDI.dump() << std::endl;
-
-        endDI = EndDI.get<std::vector<int>>();
-
-        return true;
-    }
-    catch (const json::parse_error &e)
-    {
-        std::cerr << "JSON parsing error: " << e.what() << std::endl;
-        return false;
-    }
-}
-
-// int main()
-// {
-//     HRIF_Connect(0, m_ipAddress.c_str(), 10003);
-//     // for(int i=2;i<8;i++)
-//     // {
-//     //     // endDO[i] = 1;
-//     //     endDO[2] = 1;
-//     //     SetEndDO();
-//     //     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-//     // }
-
-//     int sockfd = 0;
-//     if (!SocketConnect(sockfd))
-//     {
-//         // m_subscribedTag = -1;
-//         cout << "socket error!" << endl;
-//         return 0;
-//     }
-
-//     while (true)
-//     {
-//         // std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 读取数据的固定周期时间
-
-//         _ST_RTInfo robotInfo; // 获取机器人状态信息
-//         if (ReceiveDataFromSocket(sockfd, robotInfo))
-//         {
-//             std::vector<int> endDIVec(std::begin(robotInfo.m_RT_EndIO.nrEndDI), std::end(robotInfo.m_RT_EndIO.nrEndDI));
-//             // cout << "readDI" << endDIVec[0] << "," << endDIVec[1] << "," << endDIVec[2] << "," << endDIVec[3] << "," << endl;
-//             HandleFunc(endDIVec);
-//             // cout << "writeDO" << endDO[0] << "," << endDO[1] << "," << endDO[2] << "," << endDO[3] << ","
-//             //      << endDO[4] << "," << endDO[5] << "," << endDO[6] << "," << endDO[7] << "," << endl;
-//             // cout << "readDO" << robotInfo.m_RT_EndIO.nrEndDO[0] << "," << robotInfo.m_RT_EndIO.nrEndDO[1] << ","
-//             //      << robotInfo.m_RT_EndIO.nrEndDO[2] << "," << robotInfo.m_RT_EndIO.nrEndDO[3] << "," << endl;
-//         }
-//         else
-//         {
-//             continue;
-//         }
-//     }
-
-//     // 关闭套接字
-// close(sockfd);
-// }
-/*---------------------------------------------------------------------------------------------------------*/
-
-int main()
-{
-    HRIF_Connect(0, m_ipAddress.c_str(), 10003);
-
-    int sockfd = 0;
-    if (!SocketConnect(sockfd))
-    {
-        cout << "socket error!" << endl;
-        return 0;
-    }
-
-    while (true)
-    {
-        // std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 读取数据的固定周期时间
-        std::vector<int> endDIVec;
-        if (RecevieJsonEndDIFromSocket(sockfd, endDIVec))
-        {
-            // std::vector<int> endDIVec(std::begin(robotInfo.m_RT_EndIO.nrEndDI), std::end(robotInfo.m_RT_EndIO.nrEndDI));
-            // cout << "readDI" << endDIVec[0] << "," << endDIVec[1] << "," << endDIVec[2] << "," << endDIVec[3] << "," << endl;
-            HandleFunc(endDIVec);
-            // cout << "writeDO" << endDO[0] << "," << endDO[1] << "," << endDO[2] << "," << endDO[3] << ","
-            //      << endDO[4] << "," << endDO[5] << "," << endDO[6] << "," << endDO[7] << "," << endl;
-            // cout << "readDO" << robotInfo.m_RT_EndIO.nrEndDO[0] << "," << robotInfo.m_RT_EndIO.nrEndDO[1] << ","
-            //      << robotInfo.m_RT_EndIO.nrEndDO[2] << "," << robotInfo.m_RT_EndIO.nrEndDO[3] << "," << endl;
-        }
-        else
-        {
-            continue;
-        }
-    }
-
-    // 关闭套接字
-    close(sockfd);
+    GetEndDIFromString(endDI, receivedData);
 }

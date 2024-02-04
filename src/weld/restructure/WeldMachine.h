@@ -30,7 +30,7 @@ public:
     virtual string GetDeviceName() = 0;                        // 获取设备名
     virtual void DataCollection() = 0;                         // 数据采集
     virtual bool IsArcOnSuccess() = 0;                         // 起弧是否成功
-    virtual WeldParam GetParams() = 0;                         // 焊机数据（应该包括设置电流电压等参数，实时电流电压等参数，故障码等）
+    virtual Params GetParams() = 0;                         // 焊机数据（应该包括设置电流电压等参数，实时电流电压等参数，故障码等）
     virtual ~WeldMachine() = default;
 };
 

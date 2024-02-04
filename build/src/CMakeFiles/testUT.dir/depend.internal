@@ -50,9 +50,8 @@ src/CMakeFiles/testUT.dir/__/include/Checkout.cpp.o
 src/CMakeFiles/testUT.dir/__/include/FileExtension.cpp.o
  /home/hans/test/serial/include/FileExtension.cpp
  /home/hans/test/serial/include/FileExtension.h
+src/CMakeFiles/testUT.dir/operator/main.cpp.o
+ /home/hans/test/serial/src/operator/main.cpp
 src/CMakeFiles/testUT.dir/usb2RS485/SerialPort.cpp.o
  /home/hans/test/serial/src/usb2RS485/SerialPort.cpp
  /home/hans/test/serial/src/usb2RS485/SerialPort.h
-src/CMakeFiles/testUT.dir/weld/handle.cpp.o
- ../include/nlohmann/json.hpp
- /home/hans/test/serial/src/weld/handle.cpp
