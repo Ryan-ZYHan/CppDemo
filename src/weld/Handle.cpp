@@ -18,12 +18,35 @@ Handle::~Handle()
     close(m_sockfd);
 }
 
-int Handle::SetRobotModel(RobotModel robotModel)
+int Handle::SetRobotModel(int robotModel)
 {
     HR_LOG_Info("enter Handle::SetRobotModel.");
     m_robotModel = robotModel;
-
-    HR_LOG_Info("leave Handle::SetRobotModel.");
+    if (RobotModel::Elfin == m_robotModel)
+    {
+        m_buttonDefault[3] = 0;
+        m_buttonMap[1][3] = 0;
+        m_buttonMap[2][3] = 0;
+        m_buttonMap[3][3] = 0;
+        m_buttonMap[4][3] = 0;
+        m_buttonMap[5][3] = 0;
+        m_buttonMap[6][3] = 0;
+    }
+    else if (RobotModel::ElfinPro == m_robotModel)
+    {
+        m_buttonDefault[3] = 1;
+        m_buttonMap[1][3] = 1;
+        m_buttonMap[2][3] = 1;
+        m_buttonMap[3][3] = 1;
+        m_buttonMap[4][3] = 1;
+        m_buttonMap[5][3] = 1;
+        m_buttonMap[6][3] = 1;
+    }
+    else
+    {
+        HR_LOG_Error("robotModel error, robotModel = %d.", m_robotModel);
+    }
+    HR_LOG_Info("leave Handle::SetRobotModel, robotModel = %d.", m_robotModel);
     return 0;
 }
 
@@ -32,7 +55,7 @@ int Handle::SetPressTimeThreshold(int pressTimeThreshold)
     if (pressTimeThreshold < 1000)
     {
         HR_LOG_Error("pressTimeThreshold is too small, pressTimeThreshold = %d", pressTimeThreshold);
-        return -1;
+        return PressTimeThresholdTooSmall;
     }
     m_pressTimeThreshold = pressTimeThreshold;
     return 0;
@@ -43,7 +66,7 @@ int Handle::SetDelayTime(int delayTime)
     if (delayTime != 50 || delayTime != 100 || delayTime != 200)
     {
         HR_LOG_Error("Wrong delayTime, delayTime = %d", delayTime);
-        return -1;
+        return WrongDelayTime;
     }
     m_delayTime = delayTime;
     return 0;
@@ -51,9 +74,9 @@ int Handle::SetDelayTime(int delayTime)
 
 int Handle::SetHandleEnable(bool handleEnable)
 {
-    HR_LOG_Info("enter Handle::SetHandleEnable.");
     m_handleEnable = handleEnable;
-    HR_LOG_Info("leave Handle::SetHandleEnable. m_handleEnable = %d.", m_handleEnable);
+    HR_LOG_Info("enter Handle::SetHandleEnable. m_handleEnable = %d.", m_handleEnable);
+    return 0;
 }
 
 bool Handle::IsPush()
@@ -63,7 +86,18 @@ bool Handle::IsPush()
 
 int Handle::GetPushFunc()
 {
-    return m_pushFunctionIndex;
+    if (m_pushFunctionFlag)
+    {
+        m_pushFunctionFlag = false;
+        m_buttonIndex = 0;
+        HR_LOG_Info("Handle push = %d", m_pushFunctionIndex);
+        return m_pushFunctionIndex;
+    }
+    else
+    {
+        m_pushFunctionIndex = 0;
+        return 0;
+    }
 }
 
 int Handle::GetWeldFunc()
@@ -76,32 +110,60 @@ int Handle::Push(cJSON *root)
     if (m_pushFunctionFlag)
     {
         cJSON_AddNumberToObject(root, "buttonFunction", m_pushFunctionIndex);
+        HR_LOG_Info("Handle push %d", m_pushFunctionIndex);
         m_pushFunctionFlag = false;
         m_pushFunctionIndex = 0;
         m_buttonIndex = 0;
     }
+    else
+    {
+        cJSON_AddNumberToObject(root, "buttonFunction", 0);
+    }
+    return 0;
 }
 
-void Handle::ExeHandleAction(std::vector<int> endDI)
+bool Handle::ExeHandleAction(std::vector<int> endDI)
 {
+    if (endDI.size() != 4)
+    {
+        HR_LOG_Error("endDI size is %d. ", endDI.size());
+        return false;
+    }
     if (endDI == m_buttonDefault) // 如果信号是松开的时候
     {
+        // auto start = std::chrono::high_resolution_clock::now();
         OnButtonReleaseAction();
+        // auto end = std::chrono::high_resolution_clock::now();
+        // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        // if (duration.count() > 10)
+        //     HR_LOG_Info("OnButtonReleaseAction time is %d", duration.count());
     }
     else // 如果按下
     {
+        // auto start = std::chrono::high_resolution_clock::now();
         OnButtonPressAction(endDI);
+        // auto end = std::chrono::high_resolution_clock::now();
+        // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        // HR_LOG_Info("OnButtonPressAction time is %d", duration.count());
     }
+    return true;
 }
 
 void Handle::Start()
 {
+
     if (m_handleEnable)
     {
         std::vector<int> endDIVec;
         if (RecevieEndDI(endDIVec))
         {
-            ExeHandleAction(endDIVec);
+            // endDIVec={0,1,1,0};
+            // HR_LOG_Info("EndDI: %d,%d,%d,%d",endDIVec[0],endDIVec[1],endDIVec[2],endDIVec[3]);
+            // auto start = std::chrono::high_resolution_clock::now();
+            if (!ExeHandleAction(endDIVec))
+            {
+                return;
+            }
             switch (GetWeldFunc())
             {
             case WeldFunction::StartPushWire:
@@ -119,26 +181,41 @@ void Handle::Start()
             default:
                 break;
             }
+            // auto end = std::chrono::high_resolution_clock::now();
+            // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+            // if (duration.count() > 10)
+            // {
+            //     HR_LOG_Info("handle action time is %d", duration.count());
+            // }
+        }
+        else
+        {
+            HR_LOG_Debug("read endDI fail.");
         }
     }
 }
 
-void Handle::GetButtonPressedIndexOf6ButtonHandleForPro(std::vector<int> endDI)
+void Handle::GetButtonPressedIndexOf6ButtonHandle(std::vector<int> endDI)
 {
     for (int i = 1; i < 7; i++)
     {
         if (endDI == m_buttonMap[i])
         {
             m_buttonIndex = i;
-            HR_LOG_Debug("button index is %d", i);
+            // HR_LOG_Info("button index is %d", i);
             return;
         }
     }
-    HR_LOG_Debug("wrong button press.");
+    // HR_LOG_Debug("wrong button press.");
 }
 
 void Handle::SetEndDO()
 {
+    if(RobotModel::Elfin == m_robotModel)
+    {
+        return;
+    }
+    // m_endDO[7] = 1;
     HRIF_SetEndDO(0, 0, 2, 0); // 锁存线置低
     for (int i = 0; i < 8; i++)
     {
@@ -147,6 +224,10 @@ void Handle::SetEndDO()
         HRIF_SetEndDO(0, 0, 0, 0);          // 时钟线置低
     }
     HRIF_SetEndDO(0, 0, 2, 1); // 锁存线置高
+    if (!m_lightFlag) //长按保持常亮
+    {
+        HRIF_SetEndDO(0, 0, 2, 0); // 锁存线置低
+    }
 }
 
 void Handle::OnButtonReleaseAction()
@@ -154,16 +235,19 @@ void Handle::OnButtonReleaseAction()
     if (0 == m_buttonIndex)
     {
         m_weldFunction = 0;
+        m_lightFlag = false;
         return;
     }
     if (m_buttonIndex > 0)
     {
-        HR_LOG_Debug("button %d release.", m_buttonIndex);
+        m_lightFlag = false;
+        HR_LOG_Info("button %d release.", m_buttonIndex);
         for (int i = 0; i < 8; i++)
         {
             m_endDO[i] = 0;
         }
-        SetEndDO();
+        thread setDO(&Handle::SetEndDO, this);
+        setDO.detach();
     }
 
     switch (m_buttonIndex)
@@ -213,11 +297,27 @@ void Handle::OnButtonReleaseAction()
 
 void Handle::OnButtonPressAction(std::vector<int> endDI)
 {
-    GetButtonPressedIndexOf6ButtonHandleForPro(endDI);
+    // auto start = std::chrono::high_resolution_clock::now();
+    GetButtonPressedIndexOf6ButtonHandle(endDI);
+    // auto end = std::chrono::high_resolution_clock::now();
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    // HR_LOG_Info("GetButtonPressedIndexOf6ButtonHandleForPro time is %d", duration.count());
+
     if (m_buttonIndex > 0)
     {
-        m_endDO[8 - m_buttonIndex] = 1;
-        SetEndDO();
+        if (!m_lightFlag)
+        {
+            m_lightFlag = true;
+            m_endDO[8 - m_buttonIndex] = 1;
+            // HR_LOG_Info("EndDO: %d,%d,%d,%d,%d,%d,%d,%d",m_endDO[0],m_endDO[1],m_endDO[2],m_endDO[3],m_endDO[4],m_endDO[5],m_endDO[6],m_endDO[7]);
+            thread setDO(&Handle::SetEndDO, this);
+            setDO.detach();
+            HR_LOG_Info("button %d press.", m_buttonIndex);
+        }
+
+        // auto end2 = std::chrono::high_resolution_clock::now();
+        // auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - end);
+        // HR_LOG_Info("SetEndDO time is %d", duration2.count());
     }
 
     switch (m_buttonIndex)
@@ -308,7 +408,7 @@ void Handle::GetEndDIFromString(std::vector<int> &endDI, string charArray)
             std::string content = charArray.substr(startBracket + 1, endBracket - startBracket - 1);
 
             // 将内容解析为整数并存储到 std::vector<int> 中
-            std::vector<int> endDI;
+            // std::vector<int> endDI;
             size_t start = 0;
             size_t commaPos = content.find(',');
 
@@ -327,11 +427,16 @@ void Handle::GetEndDIFromString(std::vector<int> &endDI, string charArray)
 
 bool Handle::RecevieEndDI(std::vector<int> &endDI)
 {
+    // auto start = std::chrono::high_resolution_clock::now();
     char buffer[4096]; // 缓冲区大小
 
     // 从套接字读取数据
     int bytesRead = read(m_sockfd, buffer, sizeof(buffer));
     if (bytesRead <= 0)
+    {
+        return false;
+    }
+    if (bytesRead < 700)
     {
         return false;
     }
@@ -341,4 +446,15 @@ bool Handle::RecevieEndDI(std::vector<int> &endDI)
 
     std::string receivedData(buffer + startPos, newDataLength);
     GetEndDIFromString(endDI, receivedData);
+    // auto end = std::chrono::high_resolution_clock::now();
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    // if (duration.count() > 10)
+    //     HR_LOG_Info("RecevieEndDI time is %d", duration.count());
+
+    if (endDI.size() < 4)
+    {
+        return false;
+    }
+
+    return true;
 }
